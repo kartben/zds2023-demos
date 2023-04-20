@@ -1,0 +1,24 @@
+:name: STM32F746
+
+using sysbus
+$name?="STM32F746"
+mach create $name
+
+machine LoadPlatformDescription @platforms/boards/stm32f7_discovery-bb.repl
+
+ltdc FramesPerVirtualSecond 100
+
+showAnalyzer usart1
+showAnalyzer ltdc
+
+$bin ?= @c:/Repositories/eoc2023-demos/binaries/zephyr_stm32f746g_disco-lvgl.elf
+
+# we silence the MPU warnings in nvic
+logLevel 3 nvic
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+
+runMacro $reset

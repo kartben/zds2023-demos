@@ -1,0 +1,20 @@
+:name: adafruit_itsybitsy_m4_express
+
+using sysbus
+$name?="adafruit_itsybitsy_m4_express"
+mach create $name
+
+machine LoadPlatformDescription @platforms/cpus/atsamd51g19a.repl
+
+showAnalyzer sysbus.sercom3
+
+$bin ?= @c:/Repositories/eoc2023-demos/binaries/zephyr_adafruit_itsybitsy_m4_express-shell.elf
+# we silence the sercom3 warnings
+logLevel 3 sercom3
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+
+runMacro $reset

@@ -1,0 +1,27 @@
+:name: Arduino Nano 33 BLE
+
+using sysbus
+$name?="Nano33BLE"
+logLevel 0
+
+mach create $name
+machine LoadPlatformDescription @platforms/boards/arduino_nano_33_ble.repl
+
+showAnalyzer uart0
+
+#twi0.lsm9ds1_imu MaxFifoDepth 2
+#twi0.lsm9ds1_imu FeedAccelerationSample $ORIGIN/../renode_resources/circle_rotated.data
+
+#$bin ?= @c:/Repositories/eoc2023-demos/binaries/zephyr_arduino_nano_33_ble-sensors-shell.elf
+#$bin ?= @c:/Repositories/eoc2023-demos/binaries/ASCIITable.ino.elf
+$bin ?= @c:/Repositories/eoc2023-demos/binaries/ReadASCIIString.ino.elf
+
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+
+runMacro $reset
+
+
